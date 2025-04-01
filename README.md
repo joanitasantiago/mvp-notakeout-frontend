@@ -1,4 +1,4 @@
-# notakeout-api
+# notakeout-frontend
 
 Interface front-end do sistema **NoTakeout**, desenvolvida como parte do MVP da disciplina de Desenvolvimento Full-Stack Básico da pós-graduação em Desenvolvimento Full Stack da PUC-Rio.
 
@@ -40,7 +40,7 @@ mvp-notakeout-frontend/
 
 ---
 
-## Funcionalidades já implementadas
+## Como usar
 
 1. Clone o repositório:
 
