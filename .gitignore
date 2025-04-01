@@ -1,0 +1,30 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários de editores
+*.log
+*.swp
+*.swo
+*.tmp
+
+# Diretórios de backup e cache
+.cache/
+.vscode/
+.idea/
+
+# Arquivos de sistema ocultos
+*.bak
+*.old
+*.orig
+
+# Bootstrap (se for incluído localmente)
+bootstrap/
+
+# Arquivos gerados/exportados
+*.pdf
+*.zip
+
+# GitHub Pages
+# dist/
+# build/
