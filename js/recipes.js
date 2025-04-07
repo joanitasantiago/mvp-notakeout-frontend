@@ -56,7 +56,7 @@ function createRecipe() {
 
 
 function handleRecipeFormSubmit(event) {
-  event.preventDefault(); // Impede o recarregamento da página
+  event.preventDefault();
   createRecipe();
 }
 

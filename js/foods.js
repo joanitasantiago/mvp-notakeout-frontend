@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function createFood() {
   const newFood = collectFoodData();
 
+  if (!newFood) {
+    showAlert("Preencha todos os campos obrigatórios.", "warning");
+    return;
+  }
   fetch("http://127.0.0.1:5000/foods", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -144,7 +148,7 @@ function loadFoodForEdit(id) {
     .then((food) => {
       showEditForm(food);
       hideFoodList();
-      handleFormSubmit(id);
+      handleEditFoodFormSubmit(id);
 
       const cancelBtn = document.getElementById("cancel-edit-btn");
       if (cancelBtn) {
@@ -157,15 +161,15 @@ function loadFoodForEdit(id) {
     });
 }
 
-function handleFormSubmit(id) {
+function handleEditFoodFormSubmit(id) {
   const form = document.getElementById("food-edit-form");
   form.onsubmit = (event) => {
     event.preventDefault();
-    saveFood(id);
+    saveEditFood(id);
   };
 }
 
-function saveFood(id) {
+function saveEditFood(id) {
   const name = document.getElementById("edit-food-name").value.trim();
   const category = document.getElementById("edit-food-category").value.trim();
   const unit = document.getElementById("edit-food-unit").value.trim();
