@@ -2,42 +2,29 @@
 let ingredientCount = 1;
 
 document.addEventListener("DOMContentLoaded", () => {
-  initializeEventListeners();
-});
-
-// =====================
-// EVENT LISTENERS
-// =====================
-
-// Inicializa todos os event listeners necessários
-function initializeEventListeners() {
   const formCreate = document.getElementById("recipe-form");
   if (formCreate) {
     formCreate.addEventListener("submit", handleRecipeFormSubmit);
   }
 
-  const recipesTabButton = document.querySelector('[data-subsection="recipes-form"]');
+  const recipesTabButton = document.querySelector(
+    '[data-subsection="recipes-form"]'
+  );
   if (recipesTabButton) {
     recipesTabButton.addEventListener("click", bindIngredientButtons);
   }
 
-  const viewRecipesButton = document.querySelector('[data-subsection="recipes-list"]');
+  const viewRecipesButton = document.querySelector(
+    '[data-subsection="recipes-list"]'
+  );
   if (viewRecipesButton) {
     viewRecipesButton.addEventListener("click", loadRecipes);
   }
-}
+});
 
 // =====================
 // CRUD: CREATE
 // =====================
-
-// Lida com o envio do formulário de criação de receita
-function handleRecipeFormSubmit(event) {
-  event.preventDefault(); // Impede o recarregamento da página
-  createRecipe();
-}
-
-// Coleta os dados do formulário e envia a nova receita para a API
 function createRecipe() {
   const recipe = collectRecipeData();
 
@@ -67,11 +54,19 @@ function createRecipe() {
     });
 }
 
+
+function handleRecipeFormSubmit(event) {
+  event.preventDefault(); // Impede o recarregamento da página
+  createRecipe();
+}
+
 // Coleta os dados do formulário e valida os campos
 function collectRecipeData() {
   const name = document.getElementById("recipe-name").value.trim();
   const category = document.getElementById("recipe-category").value.trim();
-  const instructions = document.getElementById("recipe-instructions").value.trim();
+  const instructions = document
+    .getElementById("recipe-instructions")
+    .value.trim();
 
   if (!name || !category || !instructions) return null;
 
@@ -127,11 +122,20 @@ function displayRecipes(recipes) {
 
   recipes.forEach((recipe) => {
     const li = document.createElement("li");
-    li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-start", "flex-column");
+    li.classList.add(
+      "list-group-item",
+      "d-flex",
+      "justify-content-between",
+      "align-items-start",
+      "flex-column"
+    );
 
     const title = `<strong>${recipe.name}</strong> <span class="text-muted">(${recipe.category})</span>`;
     const ingredientsHTML = recipe.ingredients
-      .map((ing) => `${ing.food_name} (${ing.quantity || "Quantidade não definida"})`)
+      .map(
+        (ing) =>
+          `${ing.food_name} (${ing.quantity || "Quantidade não definida"})`
+      )
       .join(", ");
 
     li.innerHTML = `
@@ -179,7 +183,7 @@ function addIngredient() {
 
   const ingredientId = `recipe-ingredient-${ingredientCount}`;
   const quantityId = `recipe-quantity-${ingredientCount}`;
-  
+
   group.innerHTML = `
     <label for="${ingredientId}">Ingredientes</label>
     <input type="text" id="${ingredientId}" required />

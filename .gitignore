@@ -28,3 +28,13 @@ bootstrap/
 # GitHub Pages
 # dist/
 # build/
+
+#dttc
+.dir-to-text/
+
+.dttc/
+
+*.dttc
+
+.dttcignore
+
