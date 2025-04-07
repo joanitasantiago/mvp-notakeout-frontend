@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const viewFoodsButton = document.querySelector('[data-subsection="foods-list"]');
     if (viewFoodsButton) {
       viewFoodsButton.addEventListener("click", () => {
-        loadFoods(); // Só carrega alimentos quando o usuário quiser
+        loadFoods();
       });
     }
   });
@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // CRUD: CREATE
   // =====================
   function createFood() {
-    const name = document.getElementById("name").value.trim();
-    const category = document.getElementById("category").value.trim();
-    const unit = document.getElementById("unit").value.trim();
-    const in_stock = document.getElementById("in_stock").checked;
+    const name = document.getElementById("food-name").value.trim();
+    const category = document.getElementById("food-category").value.trim();
+    const in_stock = document.getElementById("in-stock").checked;
+    const unit = document.getElementById("food-unit").value.trim();
   
-    const newFood = { name, category, unit, in_stock };
+    const newFood = { name, category, in_stock, unit };
   
     fetch("http://127.0.0.1:5000/foods", {
       method: "POST",
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then(() => {
-        showAlert("Alimento cadastrado com sucesso!", "success");
+        showAlert("Alimento cadastrado com sucesso!", "success", 5000);
         document.getElementById("food-form").reset();
         loadFoods();
       })
@@ -68,13 +68,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function displayFoods(foods) {
+
+    if (foods.length === 0) {
+      listContainer.innerHTML = "<li class='text-muted'>Nenhum alimento cadastrado.</li>";
+      return;
+    }
+    console.log(foods)
+
     const listContainer = document.getElementById("foods-list-container");
     listContainer.innerHTML = "";
   
     foods.forEach((food) => {
       const li = document.createElement("li");
       li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-start", "flex-column");
-  
+      
       const title = `<strong>${food.name}</strong> <span class="text-muted">(${food.category})</span>`;
       const stockBadge = food.in_stock
         ? `<span class="badge bg-success">✔ Em estoque</span>`
@@ -91,8 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="mt-1 d-flex gap-2">${stockBadge} ${quantityBadge}</div>
           </div>
           <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-info edit-food" data-id="${food.id}">Editar</button>
-            <button class="btn btn-sm btn-outline-danger delete-food" data-id="${food.id}">Excluir</button>
+            <button class="btn btn-sm btn-outline-info edit-food-btn" data-id="${food.id}">Editar</button>
+            <button class="btn btn-sm btn-outline-danger delete-food-btn" data-id="${food.id}">Excluir</button>
           </div>
         </div>
       `;
@@ -101,14 +108,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
     // Atribui eventos de edição e exclusão
-    document.querySelectorAll(".edit-food").forEach((button) => {
+    document.querySelectorAll(".edit-food-btn").forEach((button) => {
       button.addEventListener("click", () => {
         const id = button.getAttribute("data-id");
         loadFoodForEdit(id);
       });
     });
   
-    document.querySelectorAll(".delete-food").forEach((button) => {
+    document.querySelectorAll(".delete-food-btn").forEach((button) => {
       button.addEventListener("click", () => {
         const id = button.getAttribute("data-id");
         deleteItem(id, "food", loadFoods);
@@ -127,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hideFoodList();
         handleFormSubmit(id);
   
-        const cancelBtn = document.getElementById("cancel-edit");
+        const cancelBtn = document.getElementById("cancel-edit-btn");
         if (cancelBtn) {
           cancelBtn.addEventListener("click", cancelEdit);
         }
@@ -147,9 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function saveFood(id) {
-    const name = document.getElementById("edit-name").value.trim();
-    const category = document.getElementById("edit-category").value.trim();
-    const unit = document.getElementById("edit-unit").value.trim();
+    const name = document.getElementById("edit-food-name").value.trim();
+    const category = document.getElementById("edit-food-category").value.trim();
+    const unit = document.getElementById("edit-food-unit").value.trim();
     const in_stock = document.getElementById("edit-in-stock").checked;
   
     const updatedFood = { name, category, unit, in_stock };
@@ -164,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showAlert("Alimento atualizado com sucesso!", "success");
         loadFoods();
         showFoodList();
-        document.querySelector(".foods-edit-form").classList.add("d-none");
+        document.querySelector(".foods-edit-form").classList.add("hide-element");
       })
       .catch((error) => {
         console.error("Erro ao atualizar:", error);
@@ -176,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // CANCELAR EDIÇÃO
   // =====================
   function cancelEdit() {
-    document.querySelector(".foods-edit-form").classList.add("d-none");
+    document.querySelector(".foods-edit-form").classList.add("hide-element");
     showFoodList();
   }
   
@@ -185,21 +192,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   function showEditForm(food) {
     const editForm = document.querySelector(".foods-edit-form");
-    editForm.classList.remove("d-none");
+    editForm.classList.remove("hide-element");
   
-    document.getElementById("edit-name").value = food.name;
-    document.getElementById("edit-category").value = food.category;
-    document.getElementById("edit-unit").value = food.unit;
+    document.getElementById("edit-food-name").value = food.name;
+    document.getElementById("edit-food-category").value = food.category;
+    document.getElementById("edit-food-unit").value = food.unit;
     document.getElementById("edit-in-stock").checked = food.in_stock;
   }
   
   function hideFoodList() {
-    const foodList = document.querySelector(".foods-section .subsection.foods-list");
-    if (foodList) foodList.classList.add("d-none");
+    const foodList = document.querySelector(".foods-section .content-subsection.foods-list");
+    if (foodList) foodList.classList.add("hide-element");
   }
   
   function showFoodList() {
-    const foodList = document.querySelector(".foods-section .subsection.foods-list");
-    if (foodList) foodList.classList.remove("d-none");
+    const foodList = document.querySelector(".foods-section .content-subsection.foods-list");
+    if (foodList) foodList.classList.remove("hide-element");
   }
   

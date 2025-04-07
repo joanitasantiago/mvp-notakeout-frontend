@@ -1,9 +1,9 @@
 function deleteItem(id, itemType, loadFunction) {
   const modal = new bootstrap.Modal(
-    document.getElementById("deleteConfirmationModal")
+    document.getElementById("delete-confirmation-modal")
   );
-  const confirmDeleteButton = document.getElementById("confirmDeleteButton");
-  const modalMessage = document.getElementById("modalMessage");
+  const confirmDeleteButton = document.getElementById("confirm-delete-button");
+  const modalMessage = document.getElementById("modal-message");
 
   // Modifica a mensagem do modal dependendo do tipo do item
   switch (itemType) {

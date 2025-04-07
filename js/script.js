@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => {
       const sectionName = button.getAttribute("data-section");
 
-      document.querySelectorAll("main .section").forEach((section) => {
-        section.classList.add("d-none");
+      document.querySelectorAll("main .page-section").forEach((section) => {
+        section.classList.add("hide-element");
       });
 
       const selectedSection = document.querySelector(`.${sectionName}-section`);
       if (selectedSection) {
-        selectedSection.classList.remove("d-none");
+        selectedSection.classList.remove("hide-element");
       }
     });
   });
@@ -23,15 +23,17 @@ document.addEventListener("DOMContentLoaded", () => {
   subButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const sub = button.getAttribute("data-subsection");
-      const currentSection = button.closest(".section");
+      const currentSection = button.closest(".page-section"); 
+      // closest() serve para subir na hierarquia do DOM até encontrar a seção principal que contém esse botão.
+      // Força a troca de abas ocorra somente dentro da seção ativa :)
 
-      currentSection.querySelectorAll(".subsection").forEach((subsec) => {
-        subsec.classList.add("d-none");
+      currentSection.querySelectorAll(".content-subsection").forEach((subsec) => {
+        subsec.classList.add("hide-element");
       });
 
       const target = currentSection.querySelector(`.${sub}`);
       if (target) {
-        target.classList.remove("d-none");
+        target.classList.remove("hide-element");
       }
     });
   });
