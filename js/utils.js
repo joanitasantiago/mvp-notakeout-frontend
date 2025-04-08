@@ -1,11 +1,14 @@
+// =====================
+// CRUD: DELETE
+// =====================
+
 function deleteItem(id, itemType, loadFunction) {
-  const modal = new bootstrap.Modal(
-    document.getElementById("delete-confirmation-modal")
-  );
+  const modalElement = document.getElementById("delete-confirmation-modal");
+  const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
   const confirmDeleteButton = document.getElementById("confirm-delete-button");
   const modalMessage = document.getElementById("modal-message");
 
-  // Modifica a mensagem do modal dependendo do tipo do item
+  // Atualiza a mensagem
   switch (itemType) {
     case "food":
       modalMessage.textContent =
@@ -24,32 +27,30 @@ function deleteItem(id, itemType, loadFunction) {
         "Você tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita.";
   }
 
-  // Mostra o modal
-  modal.show();
+  // Remove handlers antigos antes de adicionar um novo
+  const newButton = confirmDeleteButton.cloneNode(true);
+  confirmDeleteButton.parentNode.replaceChild(newButton, confirmDeleteButton);
 
-  // Quando o botão de excluir for clicado
-  confirmDeleteButton.onclick = () => {
-    const url = `http://127.0.0.1:5000/${itemType}s/${id}`;
-
-    fetch(url, {
+  // Evento de exclusão
+  newButton.onclick = () => {
+    fetch(`http://127.0.0.1:5000/${itemType}s/${id}`, {
       method: "DELETE",
     })
       .then((response) => {
         if (!response.ok) throw new Error("Erro ao deletar");
-        showAlert(
-          `${
-            itemType.charAt(0).toUpperCase() + itemType.slice(1)
-          } excluído com sucesso!`,
-          "success"
-        );
-        loadFunction(); // Recarrega a lista de alimentos, receitas ou menus após exclusão
+        showAlert("Item excluído com sucesso!", "success");
+        loadFunction();
       })
       .catch((error) => {
         console.error("Erro ao excluir:", error);
         showAlert("Erro ao excluir item.", "danger");
       });
 
-    // Fecha o modal
+    newButton.blur();
     modal.hide();
   };
+
+  // Exibe o modal
+  modal.show();
 }
+

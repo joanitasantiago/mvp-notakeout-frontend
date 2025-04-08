@@ -18,7 +18,7 @@ function showAlert(message, type = "success", duration = 4000) {
     wrapper.innerHTML = `
       <div class="alert alert-${type} alert-dismissible fade show" role="alert">
         ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
     `;
   

@@ -2,7 +2,6 @@
 // INIT
 // =====================
 document.addEventListener("DOMContentLoaded", () => {
-  // Ativa o formulário de cadastro de alimento
   const formCreate = document.getElementById("food-form");
   if (formCreate) {
     formCreate.addEventListener("submit", (event) => {
@@ -11,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Ativa o botão "Ver alimentos"
   const viewFoodsButton = document.querySelector(
     '[data-subsection="foods-list"]'
   );
@@ -123,7 +121,7 @@ function displayFoods(foods) {
     listContainer.appendChild(li);
   });
 
-  // Atribui eventos de edição e exclusão
+  // Ativa os botoões de edição e exclusão
   document.querySelectorAll(".edit-food-btn").forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.getAttribute("data-id");
@@ -146,9 +144,13 @@ function loadFoodForEdit(id) {
   fetch(`http://127.0.0.1:5000/foods/${id}`)
     .then((response) => response.json())
     .then((food) => {
-      showEditForm(food);
+      showEditFoodForm(food);
       hideFoodList();
-      handleEditFoodFormSubmit(id);
+      const editForm = document.getElementById("edit-food-form");
+      editForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveEditFood(id);
+      });
 
       const cancelBtn = document.getElementById("cancel-edit-btn");
       if (cancelBtn) {
@@ -161,21 +163,17 @@ function loadFoodForEdit(id) {
     });
 }
 
-function handleEditFoodFormSubmit(id) {
-  const form = document.getElementById("food-edit-form");
-  form.onsubmit = (event) => {
-    event.preventDefault();
-    saveEditFood(id);
-  };
-}
-
-function saveEditFood(id) {
+function collectEditFoodData() {
   const name = document.getElementById("edit-food-name").value.trim();
   const category = document.getElementById("edit-food-category").value.trim();
   const unit = document.getElementById("edit-food-unit").value.trim();
   const in_stock = document.getElementById("edit-in-stock").checked;
 
-  const updatedFood = { name, category, unit, in_stock };
+  return { name, category, unit, in_stock };
+}
+
+function saveEditFood(id) {
+  const updatedFood = collectEditFoodData();
 
   fetch(`http://127.0.0.1:5000/foods/${id}`, {
     method: "PUT",
@@ -187,7 +185,7 @@ function saveEditFood(id) {
       showAlert("Alimento atualizado com sucesso!", "success");
       loadFoods();
       showFoodList();
-      document.querySelector(".foods-edit-form").classList.add("hide-element");
+      document.querySelector(".edit-foods-form").classList.add("hide-element");
     })
     .catch((error) => {
       console.error("Erro ao atualizar:", error);
@@ -196,18 +194,10 @@ function saveEditFood(id) {
 }
 
 // =====================
-// CANCELAR EDIÇÃO
-// =====================
-function cancelEdit() {
-  document.querySelector(".foods-edit-form").classList.add("hide-element");
-  showFoodList();
-}
-
-// =====================
 // UI HELPERS
 // =====================
-function showEditForm(food) {
-  const editForm = document.querySelector(".foods-edit-form");
+function showEditFoodForm(food) {
+  const editForm = document.querySelector(".edit-foods-form");
   editForm.classList.remove("hide-element");
 
   document.getElementById("edit-food-name").value = food.name;
@@ -228,4 +218,9 @@ function showFoodList() {
     ".foods-section .content-subsection.foods-list"
   );
   if (foodList) foodList.classList.remove("hide-element");
+}
+
+function cancelEdit() {
+  document.querySelector(".edit-foods-form").classList.add("hide-element");
+  showFoodList();
 }
