@@ -2,6 +2,15 @@
 // INIT
 // =====================
 document.addEventListener("DOMContentLoaded", () => {
+  // Configurar o botão "Ver alimentos"
+  const foodsListBtn = document.querySelector('button[data-subsection="foods-list"]');
+  if (foodsListBtn) {
+    foodsListBtn.addEventListener("click", () => {
+      loadFoods();
+    });
+  }
+
+  // Configurar o formulário de criação de alimentos
   const formCreate = document.getElementById("food-form");
   if (formCreate) {
     formCreate.addEventListener("submit", (event) => {
@@ -9,14 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
       createFood();
     });
   }
-
-  const viewFoodsButton = document.querySelector(
-    '[data-subsection="foods-list"]'
-  );
-  if (viewFoodsButton) {
-    viewFoodsButton.addEventListener("click", () => {
-      loadFoods();
-    });
+  
+  // Configurar o botão "Cancelar" na edição de alimentos
+  const cancelEditBtn = document.getElementById("cancel-edit-btn");
+  if (cancelEditBtn) {
+    cancelEditBtn.addEventListener("click", cancelEdit);
   }
 });
 
@@ -26,10 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function createFood() {
   const newFood = collectFoodData();
 
-  if (!newFood) {
-    showAlert("Preencha todos os campos obrigatórios.", "warning");
-    return;
-  }
   fetch("http://127.0.0.1:5000/foods", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -40,7 +42,7 @@ function createFood() {
       return response.json();
     })
     .then(() => {
-      showAlert("Alimento cadastrado com sucesso!", "success", 5000);
+      showAlert("Alimento cadastrado com sucesso!", "success");
       document.getElementById("food-form").reset();
       loadFoods();
     })
@@ -48,15 +50,6 @@ function createFood() {
       console.error("Erro ao cadastrar alimento:", error);
       showAlert("Erro ao cadastrar alimento.", "danger");
     });
-}
-
-function collectFoodData() {
-  const name = document.getElementById("food-name").value.trim();
-  const category = document.getElementById("food-category").value.trim();
-  const in_stock = document.getElementById("in-stock").checked;
-  const unit = document.getElementById("food-unit").value.trim();
-
-  return { name, category, in_stock, unit };
 }
 
 // =====================
@@ -73,68 +66,6 @@ function loadFoods() {
       console.error("Erro ao carregar alimentos:", error);
       showAlert("Erro ao carregar alimentos", "danger");
     });
-}
-
-function displayFoods(foods) {
-  const listContainer = document.getElementById("foods-list-container");
-
-  if (foods.length === 0) {
-    listContainer.innerHTML =
-      "<li class='text-muted'>Nenhum alimento cadastrado.</li>";
-    return;
-  }
-
-  listContainer.innerHTML = "";
-
-  foods.forEach((food) => {
-    const li = document.createElement("li");
-    li.classList.add(
-      "list-group-item",
-      "d-flex",
-      "justify-content-between",
-      "align-items-start",
-      "flex-column"
-    );
-
-    const title = `<strong>${food.name}</strong> <span class="text-muted">(${food.category})</span>`;
-    const stockBadge = food.in_stock
-      ? `<span class="badge bg-success">✔ Em estoque</span>`
-      : `<span class="badge bg-danger">❌ Sem estoque</span>`;
-
-    const quantityBadge = !food.in_stock
-      ? ""
-      : `<span class="badge bg-secondary">Qtd: ${food.unit}</span>`;
-
-    li.innerHTML = `
-        <div class="w-100 d-flex justify-content-between align-items-center">
-          <div>
-            <div>${title}</div>
-            <div class="mt-1 d-flex gap-2">${stockBadge} ${quantityBadge}</div>
-          </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-info edit-food-btn" data-id="${food.id}">Editar</button>
-            <button class="btn btn-sm btn-outline-danger delete-food-btn" data-id="${food.id}">Excluir</button>
-          </div>
-        </div>
-      `;
-
-    listContainer.appendChild(li);
-  });
-
-  // Ativa os botoões de edição e exclusão
-  document.querySelectorAll(".edit-food-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-      const id = button.getAttribute("data-id");
-      loadFoodForEdit(id);
-    });
-  });
-
-  document.querySelectorAll(".delete-food-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-      const id = button.getAttribute("data-id");
-      deleteItem(id, "food", loadFoods);
-    });
-  });
 }
 
 // =====================
@@ -163,15 +94,6 @@ function loadFoodForEdit(id) {
     });
 }
 
-function collectEditFoodData() {
-  const name = document.getElementById("edit-food-name").value.trim();
-  const category = document.getElementById("edit-food-category").value.trim();
-  const unit = document.getElementById("edit-food-unit").value.trim();
-  const in_stock = document.getElementById("edit-in-stock").checked;
-
-  return { name, category, unit, in_stock };
-}
-
 function saveEditFood(id) {
   const updatedFood = collectEditFoodData();
 
@@ -185,7 +107,7 @@ function saveEditFood(id) {
       showAlert("Alimento atualizado com sucesso!", "success");
       loadFoods();
       showFoodList();
-      document.querySelector(".edit-foods-form").classList.add("hide-element");
+      document.getElementById("edit-food-form").parentElement.classList.add("hide-element");
     })
     .catch((error) => {
       console.error("Erro ao atualizar:", error);
@@ -194,10 +116,108 @@ function saveEditFood(id) {
 }
 
 // =====================
-// UI HELPERS
+// CRUD: DELETE
 // =====================
+function deleteItem(id) {
+  if (confirm(`Tem certeza que deseja excluir este alimento?`)) {
+    fetch(`http://127.0.0.1:5000/foods/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Erro ao excluir alimento`);
+        showAlert(`Alimento excluído com sucesso!`, "success");
+        loadFoods();
+      })
+      .catch((error) => {
+        console.error(`Erro ao excluir alimento:`, error);
+        showAlert(`Erro ao excluir alimento.`, "danger");
+      });
+  }
+}
+
+// =====================
+// AUXILIARY FUNCTIONS
+// =====================
+
+function collectFoodData() {
+  const name = document.getElementById("food-name").value.trim();
+  const category = document.getElementById("food-category").value.trim();
+  const in_stock = document.getElementById("in-stock").checked;
+  const unit = document.getElementById("food-unit").value.trim();
+
+  return { name, category, in_stock, unit };
+}
+
+function collectEditFoodData() {
+  const name = document.getElementById("edit-food-name").value.trim();
+  const category = document.getElementById("edit-food-category").value.trim();
+  const unit = document.getElementById("edit-food-unit").value.trim();
+  const in_stock = document.getElementById("edit-in-stock").checked;
+
+  return { name, category, unit, in_stock };
+}
+
+function displayFoods(foods) {
+  const listContainer = document.getElementById("foods-list-container");
+
+  if (foods.length === 0) {
+    listContainer.innerHTML = "<li>Nenhum alimento cadastrado.</li>";
+    return;
+  }
+
+  listContainer.innerHTML = "";
+  createFoodListItens(foods, listContainer);
+  activateEditAndDeleteFoodButton();
+}
+
+function createFoodListItens(foods, listContainer) {
+  foods.forEach((food) => {
+    const li = document.createElement("li");
+
+    const title = `<strong>${food.name}</strong> <span>(${food.category})</span>`;
+    const stockBadge = food.in_stock
+      ? `<span class="custom-badge badge-success">✔ Em estoque</span>`
+      : `<span class="custom-badge badge-danger">❌ Sem estoque</span>`;
+
+    const quantityBadge = !food.in_stock
+      ? ""
+      : `<span class="custom-badge badge-secondary">Qtd: ${food.unit}</span>`;
+
+    li.innerHTML = `
+        <div class="food-list-item-container">
+          <div>
+            <div>${title}</div>
+            <div class="food-list-item-badges">${stockBadge} ${quantityBadge}</div>
+          </div>
+          <div class="food-list-item-buttons">
+            <button class="edit-food-btn" data-id="${food.id}">Editar</button>
+            <button class="delete-food-btn" data-id="${food.id}">Excluir</button>
+          </div>
+        </div>
+      `;
+
+    listContainer.appendChild(li);
+  });
+}
+
+function activateEditAndDeleteFoodButton() {
+  document.querySelectorAll(".edit-food-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.getAttribute("data-id");
+      loadFoodForEdit(id);
+    });
+  });
+
+  document.querySelectorAll(".delete-food-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.getAttribute("data-id");
+      deleteItem(id);
+    });
+  });
+}
+
 function showEditFoodForm(food) {
-  const editForm = document.querySelector(".edit-foods-form");
+  const editForm = document.getElementById("edit-food-form").parentElement;
   editForm.classList.remove("hide-element");
 
   document.getElementById("edit-food-name").value = food.name;
@@ -221,6 +241,6 @@ function showFoodList() {
 }
 
 function cancelEdit() {
-  document.querySelector(".edit-foods-form").classList.add("hide-element");
+  document.getElementById("edit-food-form").parentElement.classList.add("hide-element");
   showFoodList();
 }
