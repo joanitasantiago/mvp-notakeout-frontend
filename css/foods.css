@@ -1,0 +1,138 @@
+@import url('styles.css');
+
+/* lista de alimentos */
+
+
+.foods-list ul{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: var(--rich-black);
+    list-style: none;
+  }
+  
+  .foods-list li{
+    width: 600px;
+    background-color: var(--tea-rose);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+.foods-list li:hover{
+    transform: translateY(-5px);
+    background-color: var(--tea-rose-light);
+    transition: all 0.3s ease;
+  }
+  
+  .food-list-item-container{
+    height: 80px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .food-list-item-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .custom-badge{
+    font-size: 0.8rem;
+    width: 50px;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .badge-success{
+    background-color: var(--berkeley-blue);
+  }
+  
+  .badge-danger{
+    background-color: var(--red-pantone);
+  }
+
+.badge-secondary{
+    background-color: var(--honeydew);
+}
+
+.food-list-item-buttons{
+    display: flex;  
+    gap: 10px;
+}
+
+.food-list-item-buttons button{
+    height: 30px;
+    background-color: var(--light-peach);
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.food-list-item-buttons button:hover{
+    background-color: var(--light-peach-hover);
+    height: 33px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+/* cadastro de alimentos */
+
+.foods-form, .edit-foods-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--tea-rose);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    width: 600px;
+    min-height: 400px;
+}
+
+.form-box{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 80%;
+}
+
+.form-box input{
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--honeydew);
+}
+
+.form-box button{
+    font-size: 0.7rem;
+    align-self: center;
+    height: 30px;
+    width: 100px;
+    background-color: var(--light-peach);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-box button:hover{
+    background-color: var(--light-peach-hover);
+    height: 33px;
+    width: 105px;
+    transition: all 0.3s ease;
+}
+
+
+
+
+
+
+
+
+
+

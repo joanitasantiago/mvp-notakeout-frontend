@@ -22,6 +22,14 @@ document.addEventListener("DOMContentLoaded", () => {
     recipesTabButton.addEventListener("click", bindIngredientButtons);
   }
 
+  // Configurar os botões de adicionar/remover ingrediente
+  const recipesEditTabButton = document.querySelector(
+    '[data-subsection="edit-recipes-form"]'
+  );
+  if (recipesEditTabButton) {
+    recipesEditTabButton.addEventListener("click", bindEditIngredientButtons);
+  }
+
   // Configurar o botão "Ver receitas"
   const viewRecipesButton = document.querySelector(
     '[data-subsection="recipes-list"]'
@@ -83,38 +91,38 @@ function loadRecipes() {
 // =====================
 function loadRecipeForEdit(id) {
   fetch(`http://127.0.0.1:5000/recipes/${id}`)
-  .then((response) => response.json())
-  .then((recipe) => {
-    showEditRecipeForm(recipe);
-    hideRecipeList();
-    
-    // Configurar o formulário de edição
-    const editRecipeForm = document.getElementById("edit-recipe-form");
-    // Remover qualquer evento anterior
-    const newForm = editRecipeForm.cloneNode(true);
-    editRecipeForm.parentNode.replaceChild(newForm, editRecipeForm);
-    
-    // Adicionar o novo evento
-    newForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      saveEditRecipe(id);
-    });
+    .then((response) => response.json())
+    .then((recipe) => {
+      showEditRecipeForm(recipe);
+      hideRecipeList();
 
-    // Configurar o botão Cancelar
-    const cancelBtn = document.getElementById("recipe-cancel-edit-btn");
-    if (cancelBtn) {
+      // Configurar o formulário de edição
+      const editRecipeForm = document.getElementById("edit-recipe-form");
       // Remover qualquer evento anterior
-      const newCancelBtn = cancelBtn.cloneNode(true);
-      cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-      
+      const newForm = editRecipeForm.cloneNode(true);
+      editRecipeForm.parentNode.replaceChild(newForm, editRecipeForm);
+
       // Adicionar o novo evento
-      newCancelBtn.addEventListener("click", cancelEdit);
-    }
-  })
-  .catch((error) => {
-    console.error("Erro ao carregar receita:", error);
-    showAlert("Erro ao carregar dados da receita.", "danger");
-  });
+      newForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveEditRecipe(id);
+      });
+
+      // Configurar o botão Cancelar
+      const cancelBtn = document.getElementById("recipe-cancel-edit-btn");
+      if (cancelBtn) {
+        // Remover qualquer evento anterior
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+        // Adicionar o novo evento
+        newCancelBtn.addEventListener("click", cancelEdit);
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao carregar receita:", error);
+      showAlert("Erro ao carregar dados da receita.", "danger");
+    });
 }
 
 function saveEditRecipe(id) {
@@ -130,7 +138,9 @@ function saveEditRecipe(id) {
       showAlert("Receita atualizada com sucesso!", "success");
       loadRecipes();
       showRecipeList();
-      document.querySelector(".edit-recipes-form").classList.add("hide-element");
+      document
+        .querySelector(".edit-recipes-form")
+        .classList.add("hide-element");
     })
     .catch((error) => {
       console.error("Erro ao atualizar:", error);
@@ -190,8 +200,6 @@ function collectEditRecipeData() {
     .getElementById("edit-recipe-instructions")
     .value.trim();
 
-  if (!name || !category || !instructions) return null;
-
   const ingredients = [];
   for (let i = 0; i < ingredientCount; i++) {
     const ingredientInput = document.getElementById(
@@ -211,12 +219,12 @@ function collectEditRecipeData() {
 
 function displayRecipes(recipes) {
   const listContainer = document.getElementById("recipes-list-container");
-  
+
   if (recipes.length === 0) {
     listContainer.innerHTML = "<li>Nenhuma receita cadastrada.</li>";
     return;
   }
-  
+
   listContainer.innerHTML = "";
   createRecipeListItems(recipes, listContainer);
   activateEditAndDeleteRecipeButtons();
@@ -231,13 +239,15 @@ function createRecipeListItems(recipes, listContainer) {
     const ingredientsHTML = recipe.ingredients
       .map(
         (ing) =>
-          `<span class="custom-badge badge-secondary">${ing.food_name} (${ing.quantity || "Qtd. não definida"})</span>`
+          `<span class="custom-badge badge-secondary">${ing.food_name} (${
+            ing.quantity || "Qtd. não definida"
+          })</span>`
       )
       .join(" ");
 
     li.innerHTML = `
       <div class="recipe-list-item-container">
-        <div>
+        <div class="recipe-list-item-info">
           <div>${title}</div>
           <div class="recipe-list-item-badges">${ingredientsHTML}</div>
           <div><em>Instruções:</em> ${recipe.instructions}</div>
@@ -275,7 +285,8 @@ function showEditRecipeForm(recipe) {
   // Preenche os campos principais
   document.getElementById("edit-recipe-name").value = recipe.name;
   document.getElementById("edit-recipe-category").value = recipe.category;
-  document.getElementById("edit-recipe-instructions").value = recipe.instructions;
+  document.getElementById("edit-recipe-instructions").value =
+    recipe.instructions;
 
   const container = document.querySelector(".edit-ingredients-container");
   container.innerHTML = ""; // Limpa os ingredientes anteriores
@@ -289,10 +300,14 @@ function showEditRecipeForm(recipe) {
     const quantityId = `edit-recipe-quantity-${index}`;
 
     group.innerHTML = `
-      <label for="${ingredientId}">Ingrediente</label>
-      <input type="text" id="${ingredientId}" value="${ingredient.food_name}" required />
-      <label for="${quantityId}">Quantidade</label>
-      <input type="text" id="${quantityId}" value="${ingredient.quantity || ""}" placeholder="ex: kg, unidade" />
+      <label for="${ingredientId}">Ingrediente:</label>
+      <input type="text" id="${ingredientId}" value="${
+      ingredient.food_name
+    }" required />
+      <label for="${quantityId}">Quantidade:</label>
+      <input type="text" id="${quantityId}" value="${
+      ingredient.quantity || ""
+    }" placeholder="ex: kg, unidade" />
     `;
 
     container.appendChild(group);
@@ -321,38 +336,15 @@ function bindIngredientButtons() {
 }
 
 function bindEditIngredientButtons() {
-  const addBtn = document.getElementById("add-edit-ingredient-btn");
-  const removeBtn = document.getElementById("remove-edit-ingredient-btn");
-  const container = document.querySelector(".edit-ingredients-container");
-
+  const addBtn = document.getElementById("edit-add-ingredient-btn");
+  const removeBtn = document.getElementById("edit-remove-ingredient-btn");
   if (addBtn && !addBtn.dataset.bound) {
-    addBtn.addEventListener("click", () => {
-      const group = document.createElement("div");
-      group.className = "edit-ingredient-group";
-
-      const ingredientId = `edit-recipe-ingredient-${ingredientCount}`;
-      const quantityId = `edit-recipe-quantity-${ingredientCount}`;
-
-      group.innerHTML = `
-        <label for="${ingredientId}">Ingrediente</label>
-        <input type="text" id="${ingredientId}" required />
-        <label for="${quantityId}">Quantidade</label>
-        <input type="text" id="${quantityId}" placeholder="ex: kg, unidade" />
-      `;
-      container.appendChild(group);
-      ingredientCount++;
-    });
+    addBtn.addEventListener("click", addEditIngredient);
     addBtn.dataset.bound = "true";
   }
 
   if (removeBtn && !removeBtn.dataset.bound) {
-    removeBtn.addEventListener("click", () => {
-      const groups = container.querySelectorAll(".edit-ingredient-group");
-      if (groups.length > 1) {
-        container.removeChild(groups[groups.length - 1]);
-        ingredientCount--;
-      }
-    });
+    removeBtn.addEventListener("click", removeEditIngredient);
     removeBtn.dataset.bound = "true";
   }
 }
@@ -366,13 +358,41 @@ function addIngredient() {
   const quantityId = `recipe-quantity-${ingredientCount}`;
 
   group.innerHTML = `
-    <label for="${ingredientId}">Ingrediente</label>
+    <label for="${ingredientId}">Ingrediente:</label>
     <input type="text" id="${ingredientId}" required />
-    <label for="${quantityId}">Quantidade</label>
+    <label for="${quantityId}">Quantidade:</label>
     <input type="text" id="${quantityId}" placeholder="ex: kg, unidade" />
   `;
   container.appendChild(group);
   ingredientCount++;
+}
+
+function addEditIngredient() {
+  const container = document.querySelector(".edit-ingredients-container");
+  const group = document.createElement("div");
+  group.className = "edit-ingredient-group";
+
+  const ingredientId = `edit-recipe-ingredient-${ingredientCount}`;
+  const quantityId = `edit-recipe-quantity-${ingredientCount}`;
+
+  group.innerHTML = `
+    <label for="${ingredientId}">Ingrediente:</label>
+    <input type="text" id="${ingredientId}" required /> 
+    <label for="${quantityId}">Quantidade:</label>
+    <input type="text" id="${quantityId}" placeholder="ex: kg, unidade" />
+  `;
+  container.appendChild(group);
+  ingredientCount++;
+}
+
+function removeEditIngredient() {
+  const container = document.querySelector(".edit-ingredients-container");
+  const groups = container.querySelectorAll(".edit-ingredient-group");
+
+  if (groups.length > 1) {
+    container.removeChild(groups[groups.length - 1]);
+    ingredientCount--;
+  }
 }
 
 function removeIngredient() {

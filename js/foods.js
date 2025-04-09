@@ -173,6 +173,7 @@ function displayFoods(foods) {
 function createFoodListItens(foods, listContainer) {
   foods.forEach((food) => {
     const li = document.createElement("li");
+    li.classList.add("list-group-item");
 
     const title = `<strong>${food.name}</strong> <span>(${food.category})</span>`;
     const stockBadge = food.in_stock
@@ -184,17 +185,17 @@ function createFoodListItens(foods, listContainer) {
       : `<span class="custom-badge badge-secondary">Qtd: ${food.unit}</span>`;
 
     li.innerHTML = `
-        <div class="food-list-item-container">
-          <div>
-            <div>${title}</div>
-            <div class="food-list-item-badges">${stockBadge} ${quantityBadge}</div>
-          </div>
-          <div class="food-list-item-buttons">
-            <button class="edit-food-btn" data-id="${food.id}">Editar</button>
-            <button class="delete-food-btn" data-id="${food.id}">Excluir</button>
-          </div>
+      <div class="food-list-item-container">
+        <div class="food-list-item-info">
+          <div>${title}</div>
+          <div class="food-list-item-badges">${stockBadge} ${quantityBadge}</div>
         </div>
-      `;
+        <div class="food-list-item-buttons">
+          <button class="edit-food-btn" data-id="${food.id}">Editar</button>
+          <button class="delete-food-btn" data-id="${food.id}">Excluir</button>
+        </div>
+      </div>
+    `;
 
     listContainer.appendChild(li);
   });

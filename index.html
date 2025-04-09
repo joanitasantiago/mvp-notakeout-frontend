@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NoTakeout</title>
 
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/custom-badges.css" />
-    <link rel="stylesheet" href="css/custom-layout.css" />
-    <link rel="stylesheet" href="css/custom-components.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/foods.css" />
+    <link rel="stylesheet" href="css/recipes.css" />
+
 </head>
 
 <body>
@@ -46,13 +50,12 @@
                 </div>
                 <!-- lista de Alimentos -->
                 <div class="content-subsection foods-list hide-element">
-                    <h3>Lista de Alimentos</h3>
                     <ul id="foods-list-container" class="list-group"></ul>
                 </div>
                 <!-- Cadastrar novo alimento -->
                 <div class="content-subsection foods-form hide-element">
-                    <h3>Cadastrar novo alimento</h3>
-                    <form id="food-form" class="form-grid">
+                    <form id="food-form" class="form-box">
+                        <h3>Novo alimento</h3>
                         <label for="food-name">Nome</label>
                         <input type="text" id="food-name" required/>
 
@@ -72,8 +75,8 @@
                 </div>
                 <!-- Editar alimento -->
                 <div class="content-subsection edit-foods-form hide-element">
-                    <h3>Editar Alimento</h3>
-                    <form id="edit-food-form" class="form-grid">
+                    <form id="edit-food-form" class="form-box">
+                        <h3>Editar Alimento</h3>
                         <label for="edit-food-name">Nome do Alimento</label>
                         <input type="text" id="edit-food-name" required />
 
@@ -104,13 +107,12 @@
                 </div>
                 <!-- lista de Receitas -->
                 <div class="content-subsection recipes-list hide-element">
-                    <h3>Lista de Receitas</h3>
                     <ul id="recipes-list-container" class="list-group"></ul>
                 </div>
                 <!-- Cadastrar nova receita -->
                 <div class="content-subsection recipes-form hide-element">
-                    <h3>Cadastrar nova receita</h3>
-                    <form id="recipe-form" class="form-grid">
+                    <form id="recipe-form" class="form-box">
+                        <h3>Cadastrar nova receita</h3>
                         <label for="recipe-name">Nome</label>
                         <input type="text" id="recipe-name" required />
 
@@ -122,9 +124,9 @@
                         
                         <div class="ingredients-container">
                             <div class="ingredient-group">
-                                <label for="recipe-ingredient-0">Ingrediente</label>
+                                <label for="recipe-ingredient-0">Ingrediente:</label>
                                 <input type="text" id="recipe-ingredient-0" required />
-                                <label for="recipe-quantity-0">Quantidade</label>
+                                <label for="recipe-quantity-0">Quantidade:</label>
                                 <input type="text" id="recipe-quantity-0" placeholder="ex: kg, unidade" />
                             </div>
                         </div>
@@ -140,7 +142,7 @@
                 <!-- Editar receita -->
                 <div class="content-subsection edit-recipes-form hide-element">
                     <h3>Editar Receita</h3>
-                    <form id="edit-recipe-form" class="form-grid">
+                    <form id="edit-recipe-form" class="form-box">
                         <label for="edit-recipe-name">Nome</label>
                         <input type="text" id="edit-recipe-name" required />
 
@@ -160,8 +162,8 @@
                         </div>
                         
                         <div class="ingredient-buttons">
-                            <button type="button" class="form-btn form-btn-small" id="add-edit-ingredient-btn">+ Adicionar ingrediente</button>
-                            <button type="button" class="form-btn form-btn-small" id="remove-edit-ingredient-btn">- Remover ingrediente</button>
+                            <button type="button" class="form-btn form-btn-small" id="edit-add-ingredient-btn">+ Adicionar ingrediente</button>
+                            <button type="button" class="form-btn form-btn-small" id="edit-remove-ingredient-btn">- Remover ingrediente</button>
                         </div>
                         
                         <button type="submit" class="form-btn" id="recipe-save-changes-btn">Salvar alterações</button>
@@ -208,24 +210,6 @@
                 </div>
             </section>
         </main>
-
-        <!-- Modal de confirmação de exclusão -->
-        <div class="modal" id="delete-confirmation-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirmação de Exclusão</h5>
-                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Fechar">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p id="modal-message">Você tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="form-btn form-btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="form-btn form-btn-danger" id="confirm-delete-button">Excluir</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="js/alert.js"></script>
     <script src="js/script.js"></script>
