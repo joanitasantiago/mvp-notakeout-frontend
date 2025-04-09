@@ -22,14 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     recipesTabButton.addEventListener("click", bindIngredientButtons);
   }
 
-  // Configurar os botões de adicionar/remover ingrediente
-  const recipesEditTabButton = document.querySelector(
-    '[data-subsection="edit-recipes-form"]'
-  );
-  if (recipesEditTabButton) {
-    recipesEditTabButton.addEventListener("click", bindEditIngredientButtons);
-  }
-
   // Configurar o botão "Ver receitas"
   const viewRecipesButton = document.querySelector(
     '[data-subsection="recipes-list"]'
@@ -102,6 +94,8 @@ function loadRecipeForEdit(id) {
       const newForm = editRecipeForm.cloneNode(true);
       editRecipeForm.parentNode.replaceChild(newForm, editRecipeForm);
 
+      bindEditIngredientButtons();
+
       // Adicionar o novo evento
       newForm.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -116,7 +110,7 @@ function loadRecipeForEdit(id) {
         cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
 
         // Adicionar o novo evento
-        newCancelBtn.addEventListener("click", cancelEdit);
+        newCancelBtn.addEventListener("click", cancelRecipeEdit);
       }
     })
     .catch((error) => {
@@ -338,14 +332,14 @@ function bindIngredientButtons() {
 function bindEditIngredientButtons() {
   const addBtn = document.getElementById("edit-add-ingredient-btn");
   const removeBtn = document.getElementById("edit-remove-ingredient-btn");
-  if (addBtn && !addBtn.dataset.bound) {
+  if (addBtn) {
     addBtn.addEventListener("click", addEditIngredient);
-    addBtn.dataset.bound = "true";
+    
   }
 
-  if (removeBtn && !removeBtn.dataset.bound) {
+  if (removeBtn) {
     removeBtn.addEventListener("click", removeEditIngredient);
-    removeBtn.dataset.bound = "true";
+    
   }
 }
 
@@ -429,7 +423,7 @@ function hideRecipeList() {
   if (recipeList) recipeList.classList.add("hide-element");
 }
 
-function cancelEdit() {
+function cancelRecipeEdit() {
   document.querySelector(".edit-recipes-form").classList.add("hide-element");
   showRecipeList();
 }

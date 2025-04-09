@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Configurar o botão "Cancelar" na edição de alimentos
   const cancelEditBtn = document.getElementById("cancel-edit-btn");
   if (cancelEditBtn) {
-    cancelEditBtn.addEventListener("click", cancelEdit);
+    cancelEditBtn.addEventListener("click", cancelFoodEdit);
   }
 });
 
@@ -85,7 +85,7 @@ function loadFoodForEdit(id) {
 
       const cancelBtn = document.getElementById("cancel-edit-btn");
       if (cancelBtn) {
-        cancelBtn.addEventListener("click", cancelEdit);
+        cancelBtn.addEventListener("click", cancelFoodEdit);
       }
     })
     .catch((error) => {
@@ -241,7 +241,7 @@ function showFoodList() {
   if (foodList) foodList.classList.remove("hide-element");
 }
 
-function cancelEdit() {
+function cancelFoodEdit() {
   document.getElementById("edit-food-form").parentElement.classList.add("hide-element");
   showFoodList();
 }
