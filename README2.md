@@ -2,15 +2,18 @@
 
 Interface front-end do sistema **NoTakeout**, desenvolvida como parte do MVP da disciplina de Desenvolvimento Full-Stack Básico da pós-graduação em Desenvolvimento Full Stack da PUC-Rio.
 
-O projeto permite a visualização, cadastro, edição e exclusão de alimentos, receitas e menus, além da geração de listas de compras baseadas nos menus criados, com possibilidade de exportação em PDF.
+O sistema permite gerenciar alimentos, receitas e menus pessoais, além de gerar listas de compras baseadas nos menus criados, com possibilidade futura de exportação em PDF.
 
---- 
+---
 
 ## Requisitos Acadêmicos Atendidos
 
 - Projeto 100% em **HTML, CSS e JS puro**
 - Arquitetura **SPA (Single Page Application)** sem frameworks JS
 - Funciona diretamente ao abrir o `index.html` no navegador
+- Uso de **Bootstrap** combinado com CSS personalizado
+- Navegação entre seções e subseções via JavaScript
+- Interface organizada por seções temáticas: Início, Alimentos, Receitas, Menus e Lista de Compras
 
 ---
 
@@ -25,8 +28,7 @@ mvp-notakeout-frontend/
 │   ├── styles.css           # Estilos gerais e variáveis
 │   ├── foods.css            # Estilos da seção de alimentos
 │   ├── recipes.css          # Estilos da seção de receitas
-│   ├── menus.css            # Estilos da seção de receitas (em desenvolvimento)
-│   └── shoppinglist.css     # Estilos da seção de shopping-list (em breve)
+│   └── menus.css            # Estilos da seção de menus
 │
 ├── js/                      # Scripts organizados por responsabilidade
 │   ├── script.js            # Navegação entre seções e subseções
@@ -34,7 +36,7 @@ mvp-notakeout-frontend/
 │   ├── foods.js             # CRUD de alimentos
 │   ├── recipes.js           # CRUD de receitas
 │   ├── menus.js             # CRUD de menus (em desenvolvimento)
-│   └── shoppinglist.js      # (em breve)
+│   └── utils.js             # Funções utilitárias (em breve)
 ```
 
 ---
@@ -55,34 +57,39 @@ start index.html
 # ou clique duas vezes no arquivo
 ```
 
-⚠️ A API precisa estar rodando em `http://127.0.0.1:5000/` para que o front-end funcione corretamente.
+⚠️ Certifique-se de que a API está rodando em `http://127.0.0.1:5000/`.
 
 ---
 
 ## Funcionalidades já implementadas
 
-- [x] Navegação SPA com seções dinâmicas
-- [x] Alertas de feedback (sucesso/erro)
-
-### Alimentos
+### 🌿 Alimentos
 - [x] Listagem de alimentos com badges de estoque
 - [x] Cadastro de novo alimento
 - [x] Edição de alimento existente
 - [x] Exclusão de alimento com confirmação
+- [x] Alertas de feedback (sucesso/erro)
 
-### Receitas
+### 📖 Receitas
 - [x] Listagem de receitas com ingredientes associados
 - [x] Cadastro com múltiplos ingredientes dinâmicos
 - [x] Edição com atualização completa de dados
-- [x] Exclusão de receita com confirmação
+- [x] Exclusão com confirmação
+- [x] Feedback com alertas estilizados
+
+### 🍽️ Menus
+- [ ] Listagem e criação de menus (em desenvolvimento)
+- [ ] Associação dinâmica de receitas por período do dia
+- [ ] Geração de lista de compras a partir dos menus
 
 ---
 
 ## Status do Projeto
 
-- Funcionalidades principais de alimentos e receitas implementadas
-- Funcionalidades de menus e lista de compras em desenvolvimento
-- Totalmente compatível com a [API Flask do Notakeout](https://github.com/seu-usuario/notakeout-api)
+- 🧪 Em desenvolvimento ativo
+- ✅ Funcionalidades principais de alimentos e receitas implementadas
+- 🔧 Funcionalidades de menus e lista de compras em andamento
+- 🔗 Totalmente integrado com a [API Flask do Notakeout](https://github.com/seu-usuario/notakeout-api)
 
 ---
 
