@@ -1,0 +1,15 @@
+.recipe-list-item-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.custom-badge {
+    font-size: 0.7rem;
+    background-color: #84A59D;
+    color: #FDFFFC;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: inline-block;
+}

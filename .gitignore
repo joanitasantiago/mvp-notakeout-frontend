@@ -1,40 +1,82 @@
-# Sistema operacional
-.DS_Store
-Thumbs.db
+# === Backend - Python / Flask ===
+# Ignore local virtual environments
+backend/.venv/
+backend/env/
+backend/ENV/
+backend/venv/
 
-# Arquivos temporários de editores
-*.log
-*.swp
-*.swo
-*.tmp
+# Python bytecode and caches
+backend/__pycache__/
+backend/*.py[cod]
+backend/*.pyo
+backend/*.pyd
 
-# Diretórios de backup e cache
+# SQLite and local database files
+backend/*.sqlite3
+backend/*.db
+
+# Flask instance folder
+backend/instance/
+
+# Environment files
+backend/.env
+backend/.env.*
+
+# === Frontend - Node / React ===
+# Node dependencies and build output
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Local environment files
+frontend/.env
+frontend/.env.*
+
+# Caches and temporary files
+frontend/.cache/
+frontend/.eslintcache
+frontend/coverage/
+frontend/.nyc_output/
+frontend/*.local
+frontend/*.map
+
+# === Docker related files
+.docker/
+tmp/
+volumes/
+*.pid
+*.sock
+*.tar
+
+# === Testing and coverage
+.tox/
+.pytest_cache/
 .cache/
+.coverage
+junit.xml
+
+# === IDEs and editors
 .vscode/
+!.vscode/extensions.json
 .idea/
 
-# Arquivos de sistema ocultos
+# === OS-specific system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# === Logs and temporary files
+logs/
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.tmp
 *.bak
-*.old
 *.orig
-
-# Bootstrap (se for incluído localmente)
-bootstrap/
-
-# Arquivos gerados/exportados
-*.pdf
-*.zip
-
-# GitHub Pages
-# dist/
-# build/
-
-#dttc
-.dir-to-text/
-
-.dttc/
-
-*.dttc
-
-.dttcignore
-
+*.rej
+*.swp
+*.swo

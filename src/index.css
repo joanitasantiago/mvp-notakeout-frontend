@@ -1,0 +1,10 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+  color: #13171a;
+}
+
+#root {
+  background-color: #F7EDE2;
+  min-height: 100vh;
+  padding-bottom: 20px;
+}

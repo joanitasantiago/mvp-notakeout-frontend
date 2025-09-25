@@ -1,0 +1,28 @@
+:root {
+    --navbar-bg: #84A59D;
+    --navbar-text: #13171a;
+    --navbar-text-hover: #1a1d20;
+}
+
+nav {
+    background-color: var(--navbar-bg);
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+}
+
+nav a {
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    color: var(--navbar-text);
+}
+
+nav a:hover {
+    font-size: 1.1rem;
+    color: var(--navbar-text-hover);
+}
